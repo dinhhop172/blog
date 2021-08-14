@@ -1,0 +1,13 @@
+{
+    "name": "domdom/tech-blog",
+    "authors": [{
+        "name": "dinhhop172",
+        "email": "dinhhop1702@gmail.com"
+    }],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    }
+}
