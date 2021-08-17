@@ -82,47 +82,57 @@ Post::setTimeZon();
       //       height: 260
       //    });
       // })
+      function example_image_upload_handler(blobInfo, success, failure, progress) {
+         var xhr, formData;
+
+         xhr = new XMLHttpRequest();
+         xhr.withCredentials = false;
+         xhr.open('POST', 'upload1.php');
+
+         xhr.upload.onprogress = function(e) {
+            progress(e.loaded / e.total * 100);
+         };
+
+         xhr.onload = function() {
+            var json;
+
+            if (xhr.status === 403) {
+               failure('HTTP Error: ' + xhr.status, {
+                  remove: true
+               });
+               return;
+            }
+
+            if (xhr.status < 200 || xhr.status >= 300) {
+               failure('HTTP Error: ' + xhr.status);
+               return;
+            }
+
+            json = JSON.parse(xhr.responseText);
+
+            if (!json || typeof json.location != 'string') {
+               failure('Invalid JSON: ' + xhr.responseText);
+               return;
+            }
+
+            success(json.location);
+         };
+
+         xhr.onerror = function() {
+            failure('Image upload failed due to a XHR Transport error. Code: ' + xhr.status);
+         };
+
+         formData = new FormData();
+         formData.append('file', blobInfo.blob(), blobInfo.filename());
+
+         xhr.send(formData);
+      };
 
       tinymce.init({
          selector: 'textarea#mytextarea',
          plugins: 'image code',
          toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
-
-
-         // without images_upload_url set, Upload tab won't show up
-         images_upload_url: 'upload.php',
-
-         // override default upload handler to simulate successful upload
-         images_upload_handler: function(blobInfo, success, failure) {
-            var xhr, formData;
-
-            xhr = new XMLHttpRequest();
-            xhr.withCredentials = false;
-            xhr.open('POST', 'upload.php');
-
-            xhr.onload = function() {
-               var json;
-
-               if (xhr.status != 200) {
-                  failure('HTTP Error: ' + xhr.status);
-                  return;
-               }
-
-               json = JSON.parse(xhr.responseText);
-
-               if (!json || typeof json.location != 'string') {
-                  failure('Invalid JSON: ' + xhr.responseText);
-                  return;
-               }
-
-               success(json.location);
-            };
-
-            formData = new FormData();
-            formData.append('file', blobInfo.blob(), blobInfo.filename());
-
-            xhr.send(formData);
-         },
+         images_upload_handler: example_image_upload_handler
       });
    </script>
 </body>
