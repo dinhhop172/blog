@@ -72,7 +72,6 @@ Post::setTimeZon();
    <script src="assets/js/popper.min.js"></script>
    <script src="assets/js/bootstrap.min.js"></script>
    <!-- <script src="http://cdn.ckeditor.com/4.6.2/standard-all/ckeditor.js"></script> -->
-   <!-- <script src='https://cloud.tinymce.com/stable/tinymce.min.js'></script> -->
    <!-- <script src="assets/js/tinymce.min.js"></script> -->
    <!-- <script src="../assets/js/shieldui-all.min.js"></script> -->
    <script src="https://cdn.tiny.cloud/1/x3r4d3l3gyxtyq37ohwss7rzg4c4fvvm291gccrfxsm1tr6u/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
@@ -83,10 +82,6 @@ Post::setTimeZon();
       //       height: 260
       //    });
       // })
-      // CKEDITOR.replace('content', {
-      //    height: 300,
-      //    filebrowserUploadUrl: "upload.php"
-      // });
 
       tinymce.init({
          selector: 'textarea#mytextarea',
@@ -129,91 +124,6 @@ Post::setTimeZon();
             xhr.send(formData);
          },
       });
-
-
-      // tinymce.init({
-      //    selector: '#mytextarea',
-      //    // images_upload_handler: example_image_upload_handler,
-      //    // images_upload_base_path: '../../uploads',
-      //    images_upload_url: 'upload.php',
-      //    plugins: [
-      //       'advlist autolink lists link image charmap print preview anchor',
-      //    ],
-      //    toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
-      //    content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
-      //    images_upload_handler: function(blobInfo, success, failure) {
-      //       var xhr, formData;
-
-      //       xhr = new XMLHttpRequest();
-      //       xhr.withCredentials = false;
-      //       xhr.open('POST', 'upload.php');
-
-      //       xhr.onload = function() {
-      //          var json;
-
-      //          if (xhr.status != 200) {
-      //             failure('HTTP Error: ' + xhr.status);
-      //             return;
-      //          }
-
-      //          // json = JSON.parse(xhr.responseText);
-
-      //          if (!json || typeof json.location != 'string') {
-      //             failure('Invalid JSON: ' + xhr.responseText);
-      //             return;
-      //          }
-
-      //          success(json.location);
-      //       };
-
-      //       formData = new FormData();
-      //       formData.append('file', blobInfo.blob(), blobInfo.filename());
-
-      //       xhr.send(formData);
-      //    },
-      // });
-
-      // tinymce.init({
-      //    selector: '#mytextarea',
-      //    // images_upload_handler: example_image_upload_handler,
-      //    images_upload_base_path: '../../uploads',
-      //    images_upload_url: 'postAcceptor.php',
-      //    plugins: [
-      //       'advlist autolink lists link image charmap print preview anchor',
-      //    ],
-      //    toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
-      //    content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
-      //    images_upload_handler: function(blobInfo, success, failure) {
-      //       var xhr, formData;
-
-      //       xhr = new XMLHttpRequest();
-      //       xhr.withCredentials = false;
-      //       xhr.open('POST', 'postAcceptor.php');
-
-      //       xhr.onload = function() {
-      //          var json;
-
-      //          if (xhr.status != 200) {
-      //             failure('HTTP Error: ' + xhr.status);
-      //             return;
-      //          }
-
-      //          json = JSON.parse(xhr.responseText);
-
-      //          if (!json || typeof json.location != 'string') {
-      //             failure('Invalid JSON: ' + xhr.responseText);
-      //             return;
-      //          }
-
-      //          success(json.location);
-      //       };
-
-      //       formData = new FormData();
-      //       formData.append('file', blobInfo.blob(), blobInfo.filename());
-
-      //       xhr.send(formData);
-      //    },
-      // });
    </script>
 </body>
 
