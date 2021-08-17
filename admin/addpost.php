@@ -38,7 +38,7 @@ Post::setTimeZon();
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
-   <link rel="stylesheet" type="text/css" href="http://www.shieldui.com/shared/components/latest/css/light/all.min.css" />
+   <!-- <link rel="stylesheet" type="text/css" href="http://www.shieldui.com/shared/components/latest/css/light/all.min.css" /> -->
 
    <title>Add Post</title>
 </head>
@@ -59,7 +59,7 @@ Post::setTimeZon();
                <div class="form-group">
                   <input type="file" name="image" class="form-control" />
                </div>
-               <textarea id="editor" name="content" cols="30" rows="10">Submit your text post here...</textarea>
+               <textarea id="mytextarea" name="content" cols="30" rows="15">Submit your text post here...</textarea>
                <div class="form-group mt-4">
                   <button class="btn btn-primary btn-block" name="add_post" id="submit">Submit new post</button>
                </div>
@@ -71,13 +71,149 @@ Post::setTimeZon();
    <script src="assets/js/jquery-3.6.0.min.js"></script>
    <script src="assets/js/popper.min.js"></script>
    <script src="assets/js/bootstrap.min.js"></script>
-   <script src="../assets/js/shieldui-all.min.js"></script>
+   <!-- <script src="http://cdn.ckeditor.com/4.6.2/standard-all/ckeditor.js"></script> -->
+   <!-- <script src='https://cloud.tinymce.com/stable/tinymce.min.js'></script> -->
+   <!-- <script src="assets/js/tinymce.min.js"></script> -->
+   <!-- <script src="../assets/js/shieldui-all.min.js"></script> -->
+   <script src="https://cdn.tiny.cloud/1/x3r4d3l3gyxtyq37ohwss7rzg4c4fvvm291gccrfxsm1tr6u/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+
    <script>
-      $(function() {
-         $("#editor").shieldEditor({
-            height: 260
-         });
-      })
+      // $(function() {
+      //    $("#editor").shieldEditor({
+      //       height: 260
+      //    });
+      // })
+      // CKEDITOR.replace('content', {
+      //    height: 300,
+      //    filebrowserUploadUrl: "upload.php"
+      // });
+
+      tinymce.init({
+         selector: 'textarea#mytextarea',
+         plugins: 'image code',
+         toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+
+
+         // without images_upload_url set, Upload tab won't show up
+         images_upload_url: 'upload.php',
+
+         // override default upload handler to simulate successful upload
+         images_upload_handler: function(blobInfo, success, failure) {
+            var xhr, formData;
+
+            xhr = new XMLHttpRequest();
+            xhr.withCredentials = false;
+            xhr.open('POST', 'upload.php');
+
+            xhr.onload = function() {
+               var json;
+
+               if (xhr.status != 200) {
+                  failure('HTTP Error: ' + xhr.status);
+                  return;
+               }
+
+               json = JSON.parse(xhr.responseText);
+
+               if (!json || typeof json.location != 'string') {
+                  failure('Invalid JSON: ' + xhr.responseText);
+                  return;
+               }
+
+               success(json.location);
+            };
+
+            formData = new FormData();
+            formData.append('file', blobInfo.blob(), blobInfo.filename());
+
+            xhr.send(formData);
+         },
+      });
+
+
+      // tinymce.init({
+      //    selector: '#mytextarea',
+      //    // images_upload_handler: example_image_upload_handler,
+      //    // images_upload_base_path: '../../uploads',
+      //    images_upload_url: 'upload.php',
+      //    plugins: [
+      //       'advlist autolink lists link image charmap print preview anchor',
+      //    ],
+      //    toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+      //    content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
+      //    images_upload_handler: function(blobInfo, success, failure) {
+      //       var xhr, formData;
+
+      //       xhr = new XMLHttpRequest();
+      //       xhr.withCredentials = false;
+      //       xhr.open('POST', 'upload.php');
+
+      //       xhr.onload = function() {
+      //          var json;
+
+      //          if (xhr.status != 200) {
+      //             failure('HTTP Error: ' + xhr.status);
+      //             return;
+      //          }
+
+      //          // json = JSON.parse(xhr.responseText);
+
+      //          if (!json || typeof json.location != 'string') {
+      //             failure('Invalid JSON: ' + xhr.responseText);
+      //             return;
+      //          }
+
+      //          success(json.location);
+      //       };
+
+      //       formData = new FormData();
+      //       formData.append('file', blobInfo.blob(), blobInfo.filename());
+
+      //       xhr.send(formData);
+      //    },
+      // });
+
+      // tinymce.init({
+      //    selector: '#mytextarea',
+      //    // images_upload_handler: example_image_upload_handler,
+      //    images_upload_base_path: '../../uploads',
+      //    images_upload_url: 'postAcceptor.php',
+      //    plugins: [
+      //       'advlist autolink lists link image charmap print preview anchor',
+      //    ],
+      //    toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image',
+      //    content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
+      //    images_upload_handler: function(blobInfo, success, failure) {
+      //       var xhr, formData;
+
+      //       xhr = new XMLHttpRequest();
+      //       xhr.withCredentials = false;
+      //       xhr.open('POST', 'postAcceptor.php');
+
+      //       xhr.onload = function() {
+      //          var json;
+
+      //          if (xhr.status != 200) {
+      //             failure('HTTP Error: ' + xhr.status);
+      //             return;
+      //          }
+
+      //          json = JSON.parse(xhr.responseText);
+
+      //          if (!json || typeof json.location != 'string') {
+      //             failure('Invalid JSON: ' + xhr.responseText);
+      //             return;
+      //          }
+
+      //          success(json.location);
+      //       };
+
+      //       formData = new FormData();
+      //       formData.append('file', blobInfo.blob(), blobInfo.filename());
+
+      //       xhr.send(formData);
+      //    },
+      // });
    </script>
 </body>
 
